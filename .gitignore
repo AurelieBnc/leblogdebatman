@@ -14,3 +14,9 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+# Ignorer les fichiers de migrations
+/migrations/*.php
+
+# Ignorer le dossier de travail local de Phpstorm
+/.idea/
