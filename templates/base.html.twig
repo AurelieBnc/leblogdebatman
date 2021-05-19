@@ -1,19 +1,74 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+{# la variable Twig "route" contiendra le nom de la route actuellement chargée #}
+{% set route = app.request.attributes.get('_route') %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {# la valeur dans le bloc est la valeur par defaut si une page ne défini pas de title #}
+    <title>{% block title %} Nouvelle page {% endblock %} - Le Blog de Batman </title>
+    {# Inclusion des fichiers CSS généraux du site #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
+    {# Inclusion des fichiers CSS individuels des pages qui en ont besoin #}
+    {% block css %} {% endblock %}
+
+</head>
+<body>
+
+    {# Menu principal #}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark main-navbar">
+        <div class="container-fluid">
+
+            {# Logo et titre du site #}
+            <a class="navbar-brand" href="{{ path('main_home') }}">
+                <img src="{{ asset('images/embleme-batman.png') }}" alt="" class="main-navbar-logo">
+                Le Blog de Batman
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                {# Paquet de boutons à gauche #}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {{  route == 'main_home' ? 'active' }}"  href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
+                    </li>
+                </ul>
+
+                {# Paquet de boutons à droite #}
+                <ul class="navbar-nav ms-auto me-3">
+
+                </ul>
+
+                <form class="d-flex" method="GET" action="">
+                    <input class="form-control me-2" type="search" placeholder="Trouver un article" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    {# Affichage du contenu principal des pages #}
+    {% block body %}{% endblock %}
+
+    {# Inclusion des fichiers JS généraux du site # #}
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+    {# Inclusion des fichiers JS des pages qui en ont besoin #}
+    {% block js %}{% endblock %}
+</body>
 </html>

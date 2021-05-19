@@ -1,0 +1,17 @@
+/* Toute la page*/
+
+body{
+    background-color: #1A1D45;
+    color: #F5F7F9;
+    font-family: "Roboto", sans-serif;
+}
+
+/*Navbar principale */
+.main-navbar{
+    background-color: black !important;
+}
+
+.main-navbar .main-navbar-logo{
+    width: 55px;
+    margin-right: 16px;
+}
