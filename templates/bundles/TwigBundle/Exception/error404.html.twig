@@ -1,0 +1,24 @@
+{#  Utilisation du modèle de page "base.html.twig" #}
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %}Erreur 404 : Page Introuvable{% endblock %}
+
+
+{# Contenu de  la page #}
+{% block body %}
+    <div class="container-fluid">
+
+
+        <div class="row">
+
+            <div class="col-12 text-center">
+                <img src="{{  asset('images/404.jpg') }}" alt="Erreur 404, page introuvable" class="img-fluid m-3 img-thumbnail">
+            </div>
+
+        </div>
+
+
+    </div>
+
+{% endblock %}
