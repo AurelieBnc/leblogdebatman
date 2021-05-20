@@ -46,6 +46,20 @@
                     <li class="nav-item">
                         <a class="nav-link {{  route == 'main_home' ? 'active' }}"  href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="blog-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-newspaper me-1"></i>Blog
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="blog-dropdown">
+                            <a class="dropdown-item" href="#">LIEN</a>
+
+                            {# Bouton vers la création d'une nouvelle publication si l'utilisateur possède le rôle admin #}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('blog_new_publication') }}">Nouvelle Publication</a>
+                            {% endif %}
+                        </div>
+                    </li>
                 </ul>
 
                 {# Paquet de boutons à droite #}
