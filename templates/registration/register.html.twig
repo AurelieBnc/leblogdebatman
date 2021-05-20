@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <h1 class="col-12 text-center my-5">Créer un compte</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-4 offset-md-4">
+                {{ form(registrationForm) }}
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

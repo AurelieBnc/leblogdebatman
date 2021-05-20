@@ -51,6 +51,27 @@
                 {# Paquet de boutons à droite #}
                 <ul class="navbar-nav ms-auto me-3">
 
+                    {# Si l'utilisateur est connecté #}
+                    {%  if app.user %}
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mx-1"></i>{{ app.user.pseudonym }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="profil-dropdown">
+
+                                <a class="dropdown-item" href="{{ path('main_logout') }}"><i class="fas fa-sign-out-alt mr-1"></i>Déconnexion</a>
+                            </div>
+                        </li>
+
+                    {% else %} {#  bouotons si l'utilisateur n'est pas connecté #}
+                        <li class="nav-item">
+                            <a class="nav-link {{  route == 'main_home' ? 'active' }}"  href="{{ path('main_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{  route == 'main_login' ? 'active' }}"  href="{{ path('main_login') }}"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
+                        </li>
+                    {%  endif %}
                 </ul>
 
                 <form class="d-flex" method="GET" action="">
@@ -62,6 +83,10 @@
             </div>
         </div>
     </nav>
+
+    {# affichage des messages flash de succes si existant #}
+    {%  include 'partials/success.html.twig' %}
+
     {# Affichage du contenu principal des pages #}
     {% block body %}{% endblock %}
 
