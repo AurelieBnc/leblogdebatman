@@ -1,0 +1,63 @@
+{# templates/main/createArticle.php #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        {# titre h1 #}
+        <div class="row">
+            <h1 class="col-12 text-center my-5 mb-5" >Publications du blog de Batman</h1>
+        </div>
+
+
+        {# Affichage de la liste #}
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+
+                {#  Affichage du nombre total d'articles #}
+                <div class="row">
+                    <p class="col-12 text-center">Nombre total d'articles : {{  articles|length  }}</p>
+                </div>
+
+                {#  Liste des articles #}
+                <div class="row">
+                    <div class="col-12">
+
+                        {% for article in articles %}
+                            <div class="card my-3 bg-black article-card">
+
+                                {# Titre de l'article #}
+                                <div class="card-header">
+                                    <a href="#"><i class="far fa-newspaper me-2"></i> {{ article.title }}</a>
+                                </div> {#  donnnées déjà protégées par twig #}
+
+                                {# Contenu de l'article #}
+                                <div class="card-body">
+                                    <div class="blockquote mb-0">
+                                        {# slice permet de tronquer l'article, son 3ème argument permet de garder le dernier mot #}
+                                        <p class="mb-4">{{ article.content|slice(0,150, true) }} ... <a href="#">Lire la suite</a></p>
+                                        <footer class="blockquote-footer">
+                                            Publié le <strong>{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong>
+                                        </footer>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <p class="col-12 text-center alert alert-warning">Aucune publication</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

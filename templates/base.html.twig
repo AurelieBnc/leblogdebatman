@@ -44,14 +44,14 @@
                 {# Paquet de boutons à gauche #}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{  route == 'main_home' ? 'active' }}"  href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
+                        <a class="nav-link {{  route == 'blog_publication_list' ? 'active' }}"  href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="blog-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-newspaper me-1"></i>Blog
                         </a>
                         <div class="dropdown-menu" aria-labelledby="blog-dropdown">
-                            <a class="dropdown-item" href="#">LIEN</a>
+                            <a class="dropdown-item" href="{{ path('blog_publication_list') }}">Publications</a>
 
                             {# Bouton vers la création d'une nouvelle publication si l'utilisateur possède le rôle admin #}
                             {% if is_granted('ROLE_ADMIN') %}
