@@ -1,0 +1,34 @@
+{# templates/main/createArticle.php #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ article.title }} {% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        {# titre h1 #}
+        <div class="row">
+            <h1 class="col-12 text-center my-5 mb-5" >{{ article.title }}</h1>
+        </div>
+
+        {#  lien pour retourner à la liste d'article #}
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2 text-center">
+                <a href="{{  path('blog_publication_list') }}">Retour liste des articles</a>
+            </div>
+        </div>
+
+        {# Affichage de l'article #}
+        <div class="blockquote mb-0">
+            <footer class="blockquote-footer mt-1 mb-2">
+                Publié le <strong class="text-light" >{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong class="text-light">{{ article.author.pseudonym }}</strong>
+            </footer>
+            <div class="mb-2">{{ article.content }}</div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

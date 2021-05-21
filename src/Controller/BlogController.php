@@ -60,8 +60,10 @@ class BlogController extends AbstractController
             // Message flash de succès
             $this->addFlash('success', 'Article publié avec succés !');
 
-            //TODO : rediriger sur la page qui permet de voir un article
-            return $this->redirectToRoute('main_home');
+            // redirection de l'utilisateur sur la page permettant de visualiser le nouvel article
+            return $this->redirectToRoute('blog_publication_view', [
+                'slug'=> $newArticle->getSlug(),
+            ]);
         }
 
         // Pour que la vue puisse afficher le formulaire, on doit lui envoyer le formulaire généré, avec $form->createView()
@@ -86,6 +88,21 @@ class BlogController extends AbstractController
         // Appel de la vue en lui envoyant la liste des articles
         return $this->render('blog/publicationList.html.twig', [
             'articles'=> $articles,
+        ]);
+    }
+
+    /**
+     * Controleur de la page d'un article en détail
+     *
+     * @Route("/publication/{slug}/", name="publication_view")
+     */
+
+    public function publicationView(ARTICLE $article): Response
+    {
+        dump($article);
+
+        return $this->render('blog/publicationView.html.twig', [
+            'article'=> $article,
         ]);
     }
 

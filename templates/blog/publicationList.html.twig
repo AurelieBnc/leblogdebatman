@@ -32,14 +32,14 @@
 
                                 {# Titre de l'article #}
                                 <div class="card-header">
-                                    <a href="#"><i class="far fa-newspaper me-2"></i> {{ article.title }}</a>
+                                    <a href="{{ path('blog_publication_view', {slug:article.slug}) }}"><i class="far fa-newspaper me-2"></i> {{ article.title }}</a>
                                 </div> {#  donnnées déjà protégées par twig #}
 
                                 {# Contenu de l'article #}
                                 <div class="card-body">
                                     <div class="blockquote mb-0">
                                         {# slice permet de tronquer l'article, son 3ème argument permet de garder le dernier mot #}
-                                        <p class="mb-4">{{ article.content|slice(0,150, true) }} ... <a href="#">Lire la suite</a></p>
+                                        <p class="mb-4">{{ article.content|slice(0,150, true) }} ... <a href="{{ path('blog_publication_view', {slug:article.slug}) }}">Lire la suite</a></p>
                                         <footer class="blockquote-footer">
                                             Publié le <strong>{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong>
                                         </footer>
