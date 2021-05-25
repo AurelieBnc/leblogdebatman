@@ -26,6 +26,12 @@
                 Publié le <strong class="text-light" >{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong class="text-light">{{ article.author.pseudonym }}</strong>
             </footer>
             <div class="mb-2">{{ article.content|purify }}</div>
+            {# si l'utilisateur a le role admin, on affiche un menu avec des boutons permettant de mofiier/supprimer l'article #}
+            {% if is_granted('ROLE_ADMIN') %}
+                <p class="mb-0 mt-3">
+                    <a href="{{ path ('blog_publication_edit', {id: article.id}) }}"><i class="fas fa-edit me-1"></i>Modifier</a>
+                </p>
+            {% endif %}
         </div>
 
 
