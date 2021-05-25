@@ -35,5 +35,48 @@ class AppFixtures extends Fixture
                 $this->encoder->encodePassword($admin, 'admin@123')
             )
             ;
+
+        $manager->persist($admin);
+
+        //création de 50 comptes utilisateurs
+        for($i = 0; $i <50; $i++){
+
+            //création d'un nouveau compte
+            $user = new User();
+
+            $user
+                ->setEmail($faker->email)
+                ->setRegistrationDate( $faker->dateTimeBetween('-1 year', 'now'))
+                ->setPseudonym( $faker->userName)
+                ->setPassword(
+                    $this->encoder->encodePassword($user, 'admin@123')
+                )
+                ;
+            // persistance de l'utilisateur
+            $manager->persist( $user);
+        }
+        //Création de 200 articles
+        for($i =0; $i <200; $i++){
+
+            //Création d'un nouvel article
+            $article =new Article();
+
+            // hydratation des articles
+            $article
+                ->setPublicationDate( $faker->dateTimeBetween($admin -> getRegistrationDate(), 'now'))
+                ->setAuthor($admin)
+                ->setTitle($faker->sentence(10) )
+                ->setContent( $faker->paragraph(15) )
+                ;
+
+            //persistance des articles
+            $manager->persist($article);
+
+        }
+
+            $manager->flush();
     }
+
+
 }
+
