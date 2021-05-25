@@ -39,7 +39,7 @@
                                 <div class="card-body">
                                     <div class="blockquote mb-0">
                                         {# slice permet de tronquer l'article, son 3ème argument permet de garder le dernier mot #}
-                                        <p class="mb-4">{{ article.content|slice(0,150, true) }} ... <a href="{{ path('blog_publication_view', {slug:article.slug}) }}">Lire la suite</a></p>
+                                        <p class="mb-4">{{ article.content|striptags|slice(0,150, true) }} ... <a href="{{ path('blog_publication_view', {slug:article.slug}) }}">Lire la suite</a></p>
                                         <footer class="blockquote-footer">
                                             Publié le <strong>{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong>
                                         </footer>

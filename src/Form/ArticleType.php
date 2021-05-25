@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\Length;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+
 
 
 class ArticleType extends AbstractType
@@ -32,10 +34,10 @@ class ArticleType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('content', TextareaType::class,[
+            ->add('content', CKEditorType::class,[
                 'label' => 'Contenu',
                 'attr' =>[
-                    'rows'=> 10,
+                    'class'=> 'd-none',
                 ],
                 'constraints' =>[
                     new NotBlank([
