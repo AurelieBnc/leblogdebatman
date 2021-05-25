@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     site_name: 'Le blog de Batman'
+    google_recaptcha_private_key: '%env(GOOGLE_RECAPTCHA_PRIVATE_KEY)%'
 
 services:
     # default configuration for services in *this* file
