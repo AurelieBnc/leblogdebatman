@@ -51,7 +51,7 @@
                             <i class="fas fa-newspaper me-1"></i>Blog
                         </a>
                         <div class="dropdown-menu" aria-labelledby="blog-dropdown">
-                            <a class="dropdown-item" href="{{ path('blog_publication_list') }}">Publications</a>
+                            <a class="dropdown-item" href="{{ path('blog_publication_list') }}">Liste des publications</a>
 
                             {# Bouton vers la création d'une nouvelle publication si l'utilisateur possède le rôle admin #}
                             {% if is_granted('ROLE_ADMIN') %}
@@ -100,6 +100,9 @@
 
     {# affichage des messages flash de succes si existant #}
     {%  include 'partials/success.html.twig' %}
+
+    {# affichage des messages flash d'erreur si existant #}
+    {%  include 'partials/error.html.twig' %}
 
     {# Affichage du contenu principal des pages #}
     {% block body %}{% endblock %}

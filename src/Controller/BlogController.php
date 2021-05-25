@@ -144,4 +144,33 @@ class BlogController extends AbstractController
             ]);
     }
 
+    /**
+     * page admin qui permettra de supprimer un article
+     * @Route("/publication/suppression/{id}/", name="publication_delete")
+     * @Security ("is_granted('ROLE_ADMIN')")
+     */
+    public function publicationDelete(Article $article, Request $request): Response
+    {
+        // Récupération du token csrf dans l'url
+        $tokenCSRF = $request->query->get('csrf_token');
+
+        // Vérification que le token est valide
+        if( !$this->isCsrfTokenValid(
+            'blog_publication_delete' . $article->getId(),
+            $tokenCSRF
+        )){
+            $this->addFlash ('error','Token sécurité invalide, veuillez re-essayer');
+        }else{
+
+            // Suppression de l'article
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($article);
+            $em->flush();
+
+            $this->addFlash('success', 'La publication a bien été supprimée avec succès!');
+        }
+
+        return $this->redirectToRoute('blog_publication_list');
+
+    }
 }

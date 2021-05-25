@@ -48,6 +48,12 @@
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <p class="mb-0 mt-3">
                                         <a href="{{ path ('blog_publication_edit', {id: article.id}) }}"><i class="fas fa-edit me-1"></i>Modifier</a>
+                                        {#
+                                        Bouton de supression composé de :
+                                        - onclick ="" pour demander une confirmation de suppresion grâce à la fonction confirm() de javascript - onclick est un élément html
+                                        - un token csrf en donnée d'url pour empêcher les attaques Csrf
+                                        #}
+                                        <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')" class="text-danger" href="{{ path('blog_publication_delete', { id : article.id, csrf_token : csrf_token('blog_publication_delete_' ~ article.id ) }) }}"><i class="fas fa-trash me-1"></i>Supprimer</a>
                                     </p>
                                     {% endif %}
                                 </div>
