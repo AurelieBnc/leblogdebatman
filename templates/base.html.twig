@@ -11,7 +11,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {# la valeur dans le bloc est la valeur par defaut si une page ne défini pas de title #}
-    <title>{% block title %} Nouvelle page {% endblock %} - Le Blog de Batman </title>
+    <title>{% block title %} Nouvelle page {% endblock %} - {{ site_name }} </title>
     {# Inclusion des fichiers CSS généraux du site #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -30,7 +30,7 @@
             {# Logo et titre du site #}
             <a class="navbar-brand" href="{{ path('main_home') }}">
                 <img src="{{ asset('images/embleme-batman.png') }}" alt="" class="main-navbar-logo">
-                Le Blog de Batman
+                {{ site_name }}
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
