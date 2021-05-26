@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Titre de la page #}
-{% block title %}Le blog de Batman{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 
 {# Contenu de  la page #}
@@ -12,11 +12,85 @@
 
         <div class="row">
 
-            <h1 class="col-12 text-center my-5">Le Blog de Batman</h1>
+            <h1 class="col-12 text-center my-5">{{  site_name }}</h1>
 
         </div>
 
+        {#  Contenus lorem ipsum pour habiller n peu l'acceuil #}
+        <div class="row">
+            <h2 class="text-center cool-12 my-4"> Lorem ipsum dolor sit amet, consectetur adipisicing elit</h2>
+            <p class="col-12 col-md-10 offset-md-1 text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus autem consequatur, dicta dignissimos dolore enim et excepturi fugit illum iusto maiores officia officiis porro provident quae quos rerum veniam voluptatem.Blanditiis dignissimos dolor et explicabo harum impedit incidunt ipsum iure laboriosam minus modi molestias nisi officia omnis porro possimus quas quidem quis ratione reiciendis repellendus reprehenderit, repudiandae sunt, ullam unde.Adipisci amet culpa doloribus ducimus enim laboriosam nemo obcaecati quae quaerat quibusdam quidem, quod quos saepe similique, sit totam ullam. Exercitationem minus possimus soluta voluptatibus. Exercitationem fugit placeat possimus sit!</p>
+        </div>
+
+        {#  Affichage d'une cover de Batman #}
+        <div class="row my-5 batman-cover"></div>
+
+        {# Affichage des derniers articles publiés #}
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+
+                {# Titre h2 #}
+                <div class="row">
+                    <h2 class="col-12 text-center">Dernières publications</h2>
+                </div>
+
+                {# Articles #}
+                <div class="row">
+
+                    {# S'il n y a pas d'articles #}
+                    {% for article in articles %}
+
+                        <div class="col-12">
+                            <div class="card my-3 bg-black article-card">
+
+                                {# Titre de l'articles #}
+                                <div class="card-header">
+                                    <a href="{{  path('blog_publication_view', {slug :article.slug}) }}"><i class="far fa-newspapaer me-2"></i>{{ article.title }}</a>
+                                </div>
+
+                                {# contenu de l'article #}
+                                <div class="card-body">
+                                    <div class="blockquote mb-0">
+                                        <p class="mb-4">{{ article.content|striptags|slice(0,150) }}... <a href="{{ path('blog_publication_view', {slug: article.slug}) }}">Lire la suite</a></p>
+
+                                        {# Affichage de l'auteur et de la date de publication #}
+                                        <footer class="blockquote-footer">Publié le <strong>{{ article.publicationDate|date('d/m/y à H\\hi') }} </strong>par <strong>{{ article.author.pseudonym }}</strong></footer>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <div class="row">
+                            <p class="col-12 text-center alert alert-warning my-4">Aucune publication a afficher</p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row mb-5">
+
+            <h2 class="text-center col-12 my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit</h2>
+            <p class="col-12 col-md-10 offset-md-1 text-center mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor ducimus impedit iusto nisi, rerum sunt unde! Ab aliquid at deleniti ducimus ea eos est in incidunt laudantium omnis, possimus ratione.Blanditiis consequatur esse exercitationem maxime necessitatibus neque nobis non quaerat repellendus. Aliquid amet at consectetur, doloribus error est, exercitationem ipsa ipsum laudantium maxime neque nostrum obcaecati quisquam tempora veniam vero.Aliquid asperiores consectetur libero minus perspiciatis quasi temporibus. Adipisci eum ex explicabo illum ipsam, neque obcaecati optio quisquam similique soluta tenetur voluptatem. Harum iure, minus natus nesciunt sunt ut voluptatem.</p>
+
+        </div>
 
     </div>
 
+{% endblock %}
+{% block css %}
+    {# Le style CSS de l'image de cover est fait ici car on aurait pas pu générer le lien avec asset () dans le fichier styles.css #}
+    <style>
+        .batman-cover{
+            background-image: url('{{ asset('/images/batman-cover.png') }}');
+            height: 400px;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
 {% endblock %}
