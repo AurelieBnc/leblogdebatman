@@ -88,8 +88,8 @@
                     {%  endif %}
                 </ul>
 
-                <form class="d-flex" method="GET" action="">
-                    <input class="form-control me-2" type="search" placeholder="Trouver un article" aria-label="Search">
+                <form class="d-flex" method="GET" action="{{ path('blog_search') }}">
+                    <input name="q" class="form-control me-2" type="search" placeholder="Trouver un article" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">
                         <i class="fas fa-search"></i>
                     </button>

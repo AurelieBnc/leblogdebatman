@@ -1,0 +1,86 @@
+{# templates/main/createArticle.php #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat de recherche{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        {# titre h1 #}
+        <div class="row">
+            <h1 class="col-12 text-center my-5 mb-5" >Résultat de la recherche "{{ app.request.query.get('q') }}"</h1>
+        </div>
+
+
+        {# Affichage de la liste #}
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+
+                {#  Affichage du nombre total d'articles #}
+                <div class="row">
+                    <p class="col-12 text-center">Nombre total de résultat : {{  articles.getTotalItemCount  }}</p>
+                </div>
+
+                {# sil y a des articles , on affiche le menu de navigation #}
+                {% if articles is not empty %}
+                    <div class="row">
+                        <div class="col-12 my-3 text-center">
+                            <div class="d-inline-block">
+                                {{ knp_pagination_render(articles) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {#  Liste des articles #}
+                <div class="row">
+                    <div class="col-12">
+
+                        {% for article in articles %}
+                            <div class="card my-3 bg-black article-card">
+
+                                {# Titre de l'article #}
+                                <div class="card-header">
+                                    <a href="{{ path('blog_publication_view', {slug:article.slug}) }}"><i class="far fa-newspaper me-2"></i> {{ article.title }}</a>
+                                </div> {#  donnnées déjà protégées par twig #}
+
+                                {# Contenu de l'article #}
+                                <div class="card-body">
+                                    <div class="blockquote mb-0">
+                                        {# slice permet de tronquer l'article, son 3ème argument permet de garder le dernier mot #}
+                                        <p class="mb-4">{{ article.content|striptags|slice(0,150, true) }} ... <a href="{{ path('blog_publication_view', {slug:article.slug}) }}">Lire la suite</a></p>
+                                        <footer class="blockquote-footer">
+                                            Publié le <strong>{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong>
+                                        </footer>
+                                    </div>
+                                    {# si l'utilisateur a le role admin, on affiche un menu avec des boutons permettant de mofiier/supprimer l'article #}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <p class="mb-0 mt-3">
+                                        <a href="{{ path ('blog_publication_edit', {id: article.id}) }}"><i class="fas fa-edit me-1"></i>Modifier</a>
+                                        {#
+                                        Bouton de supression composé de :
+                                        - onclick ="" pour demander une confirmation de suppresion grâce à la fonction confirm() de javascript - onclick est un élément html
+                                        - un token csrf en donnée d'url pour empêcher les attaques Csrf
+                                        #}
+                                        <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')" class="text-danger" href="{{ path('blog_publication_delete', { id : article.id, csrf_token : csrf_token('blog_publication_delete_' ~ article.id ) }) }}"><i class="fas fa-trash me-1"></i>Supprimer</a>
+                                    </p>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <p class="col-12 text-center alert alert-warning">Aucune résultat pour cette recherche</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

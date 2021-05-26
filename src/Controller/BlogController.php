@@ -194,4 +194,43 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('blog_publication_list');
 
     }
+
+    /**
+     * page qui affiche les résultats de recherche du formulaire dans la navbar
+     *
+     * @Route("/recherche/", name="search")
+     */
+    public function search(Request $request, PaginatorInterface $paginator): Response
+    {
+        // On récupère dans l'URL la données GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
+        $requestedPage = $request->query->getInt('page', 1);
+
+        // Si le numero de page demandné dans l'URL est inférieur à 1, erreur 404
+        if($requestedPage < 1){
+            throw new NotFoundHttpException();
+        }
+
+        // Récupération du manager général des entités
+        $em = $this->getDoctrine()->getManager();
+
+        // récupération de la recherche dans le formulaire
+        $search =$request->query->get('q');
+
+        // Création de la requete
+        $query = $em
+            ->createQuery('SELECT a FROM App\Entity\Article a WHERE a.title LIKE :search OR a.content LIKE :search ORDER BY a.publicationDate DESC')
+            ->setParameters(['search'=> '%'.$search.'%'])
+            ;
+
+        // Récupération des articles
+        $articles = $paginator->paginate(
+            $query,
+            $requestedPage,
+            15
+        );
+        // Appel de la vue
+        return $this->render('blog/search.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
 }
