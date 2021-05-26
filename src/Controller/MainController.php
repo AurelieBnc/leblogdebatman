@@ -27,7 +27,6 @@ class MainController extends AbstractController
         $articles = $articleRepo->findBy([], ['publicationDate' => 'DESC'], $articlesNumber);
 
         return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
             'articles' => $articles,
         ]);
     }

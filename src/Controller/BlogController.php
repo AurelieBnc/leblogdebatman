@@ -10,6 +10,8 @@ use App\Form\ArticleType;
 use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Request;
 use \DateTime;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 /**
@@ -78,12 +80,31 @@ class BlogController extends AbstractController
      *
      * @Route("/publications/liste/", name="publication_list")
      */
-    public function publicationList() : Response
+    public function publicationList(Request $request, PaginatorInterface $paginator) : Response
     {
-        // Récupération du repository des articles pour pouvoir les récupérer
-        $articleRepo = $this->getDoctrine()->getRepository(Article::class);
+        // On récupère dans l'URL la données GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
+        $requestedPage = $request->query->getInt('page', 1);
 
-        $articles = $articleRepo->findAll();
+        // Si le numero de page demandné dans l'URL est inférieur à 1, erreur 404
+        if($requestedPage < 1){
+            throw new NotFoundHttpException();
+        }
+
+        // Récupération du manager général des entités
+        $em = $this->getDoctrine()->getManager();
+
+        // Création d'une requête qui servira au paginator pour récupérer les articles de la page courante
+        $query = $em->createQuery('SELECT a FROM App\Entity\Article a');
+
+        // on stock dans $articles les 10 articles de la page demandée dans l'url
+        $articles = $paginator->paginate(
+            $query,                 // requete de selection
+            $requestedPage,         // numero de la page actuelle
+            10                 // nombre d'article par page
+        );
+
+
+
 
         // Appel de la vue en lui envoyant la liste des articles
         return $this->render('blog/publicationList.html.twig', [
