@@ -1,7 +1,7 @@
 {%  for message in app.flashes('success') %}
-
-    <div class="row">
-        <div class="alert alert-success text-center col-12 my-2">{{ message }}</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="alert alert-success text-center col-12 my-2">{{ message }}</div>
+        </div>
     </div>
-
 {%  endfor %}

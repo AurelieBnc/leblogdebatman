@@ -3,15 +3,21 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Form\ArticleType;
-use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Request;
-use \DateTime;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Form\ArticleType;
+use App\Form\CommentType;
+use App\Entity\Article;
+use App\Entity\User;
+use App\Entity\Comment;
+use \DateTime;
+
+
+
 
 
 /**
@@ -104,8 +110,6 @@ class BlogController extends AbstractController
         );
 
 
-
-
         // Appel de la vue en lui envoyant la liste des articles
         return $this->render('blog/publicationList.html.twig', [
             'articles'=> $articles,
@@ -118,12 +122,58 @@ class BlogController extends AbstractController
      * @Route("/publication/{slug}/", name="publication_view")
      */
 
-    public function publicationView(Article $article): Response
+    public function publicationView(Article $article, Request $request): Response
     {
-        dump($article);
+        // si l'utilisateur n'est pas connecté on appelle la vu si dessous
+        if(   !$this->getUser()  ){
+            return $this->render('blog/publicationView.html.twig',[
+                'article'=> $article,
+            ]);
+        }
 
-        return $this->render('blog/publicationView.html.twig', [
+        // Création d'un nouvel objet de la classe Comment, vide pour le moment
+        $newComment = new Comment();
+
+        // Création d'un nouveau formulaire à partir de notre formulaire CommentType et de notre nouveau comment encore vide
+        $formComment = $this->createForm(CommentType::class, $newComment);
+
+        // Symfony va remplir $newArticle grâce aux données du formulaire envoyé (accessibles dans l'objet Request, c'est pour ça qu'on doit lui donner) // hydratation
+        $formComment->handleRequest($request);
+
+        // Pour savoir si le formulaire a été envoyé, on a accès à cette condition :
+        if($formComment->isSubmitted() && $formComment->isValid()){
+
+
+            // Hydratation du commentaire avec la date, l'auteur et lid de l'article
+            $newComment
+                ->setPublicationDate(new DateTime())
+                ->setAuthor($this->getUser())
+                ->setArticle($article)
+            ;
+
+            // récupération du manager des entités et sauvegarde en BDD de $newComment
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($newComment);
+
+            $em->flush();
+
+            // message de succes
+            $this->addFlash('success', 'Votre commentaire a bien été envoyé !');
+
+            //nettoyage du formulaire- suppression des variables et nouvelle création
+            unset($newComment);
+            unset($formComment);
+
+            $newComment= new Comment();
+            $formComment = $this->createForm(CommentType::class, $newComment);
+
+
+        }
+        // Pour que la vue puisse afficher le formulaire, on doit lui envoyer le formulaire généré, avec $form->createView()
+        return $this->render('blog/publicationView.html.twig',[
             'article'=> $article,
+            'formComment' => $formComment->createView()
         ]);
     }
 
@@ -231,6 +281,39 @@ class BlogController extends AbstractController
         // Appel de la vue
         return $this->render('blog/search.html.twig', [
             'articles' => $articles,
+        ]);
+    }
+
+    /**
+     * Page admin permettant de supprimer un commentaire
+     *
+     * @Route("/commentaire/suppression/{id}/", name="comment_delete")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function commentDelete(Comment $comment, Request $request): Response
+    {
+
+        // Récupération du token csrf dans l'url
+        $tokenCSRF = $request->query->get('csrf_token');
+
+        // Vérification que le token est valide
+        if(!$this->isCsrfTokenValid(
+            'blog_comment_delete_' . $comment->getId(),
+            $tokenCSRF
+        )){
+            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+        } else {
+
+            // Suppression du commentaire
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+
+            $this->addFlash('success', 'Le commentaire a été supprimé avec succès !');
+
+        }
+        return $this->redirectToRoute('blog_publication_view', [
+            'slug' => $comment->getArticle()->getSlug(),
         ]);
     }
 }

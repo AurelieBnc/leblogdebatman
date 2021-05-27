@@ -42,3 +42,16 @@ body{
  .pagination .page-item a.page-link:hover{
      background-color: #292929;
  }
+
+ /*Image de profil*/
+.comment-profil-photo{
+    width: 84px;
+    height: 84px;
+}
+
+ .admin-button-article{
+     position:absolute;
+     top:14px;
+     right:0;
+     width: auto;
+ }
