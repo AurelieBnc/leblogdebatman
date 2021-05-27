@@ -70,7 +70,12 @@
                                 {# affichage de la photo de profil #}
                                 {# todo: afficher la photo #}
                                 <div class="mx-2 d-flex justify-content-center align-items-center bg-black comment-profil-photo">
-                                    <img src="" alt=""> Lorem Ipsum
+                                    {% if comment.author.photo is null %}
+                                        <img class="img-fluid img-thumbnail-mini" src="{{ asset('images/profil_default.jpg')|imagine_filter('comment') }}" alt="">
+                                    {% else %}
+                                        <img class="img-fluid img-thumbnail-mini" src="{{ asset('images/users/' ~ comment.author.photo)|imagine_filter('comment') }}" alt="">
+
+                                    {% endif %}
                                 </div>
 
                                 {# Affichage de la date de publication et de l'auteur du commentaire #}

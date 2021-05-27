@@ -20,3 +20,11 @@
 
 # Ignorer le dossier de travail local de Phpstorm
 /.idea/
+
+# Ignorer les images uploadés par les utilisateurs
+/public/images/users/*.*
+!/public/images/users/.gitignore
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

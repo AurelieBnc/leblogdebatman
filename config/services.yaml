@@ -7,6 +7,7 @@ parameters:
     site_name: 'Le blog de Batman'
     google_recaptcha_private_key: '%env(GOOGLE_RECAPTCHA_PRIVATE_KEY)%'
     homepage_articles_number: 3
+    users_uploaded_photo_directory: '%kernel.project_dir%/public/images/users/'
 
 services:
     # default configuration for services in *this* file

@@ -55,3 +55,8 @@ body{
      right:0;
      width: auto;
  }
+
+/* Page profil */
+.profil-infos .list-group-item{
+    color: white;
+}
